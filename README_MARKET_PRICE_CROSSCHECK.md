@@ -54,3 +54,41 @@ Local ignored outputs in
 modify NAV Total Return or add background data fetching. To recheck future
 anomalies, store a new dated Yahoo OHLCV snapshot with the same columns
 and pass \`--yahoo path/to/snapshot.csv\`; do not silently overwrite this reference.
+
+
+## 2026-11-23 follow-up: two issuer missing prices verified
+
+Second [one-shot Yahoo Chart API query](https://github.com/Shuatify/yield-share-anatomy/actions/runs/45118664357)
+returned HTTP 200 and exchange metadata \`YTSL.NE / NEO / CAD\` for
+the two recent dates omitted in Purpose's \`price\` field.
+
+| Date | Purpose NAV | Purpose Price | Yahoo Open / High / Low / Close | Volume | Decision |
+|---|---:|---|---|---:|---|
+| 2026-06-23 | 18.55 | missing | 19.25 / 19.25 / 18.43 / **18.57** | 755,183 | Yahoo substitute |
+| 2026-11-02 | 17.32 | missing | 17.30 / 17.77 / 17.05 / **17.33** | 414,900 | Yahoo substitute |
+
+The original date-scoped historical evidence is retained separately in
+\`data/reference/ytsl_yahoo_close_2026.csv\`, with source and retrieval
+date. Our auditor now supports **multiple** frozen reference snapshots,
+refuses duplicate date collisions, and records per-row \`reference_file\`
+as well as source hashes. The default CLI reads both snapshots.
+
+For custom snapshots (repeated option):
+
+~~~bash
+uv run --locked python yield_share_market_price_reconciliation.py \
+  --yahoo data/reference/ytsl_yahoo_close_2022_2023.csv \
+  --yahoo data/reference/ytsl_yahoo_close_2026.csv
+~~~
+
+As a further warning against trusting any single provider's candle
+uncritically, Yahoo's 2026-06-24 Close was 18.57, above its reported
+High of 18.23 (volume 1,800). This does **not** prove that the
+reported closing price is wrong: exchange closing-price methodology
+can differ from intraday trade observations. We continue to **flag**
+OHLC contradictions and require independent evidence before replacing
+Purpose observations in such cases. The unresolved 2022-12-20 Close
+therefore remains excluded in the derived series.
+
+No auto-fetching, no modifications of raw issuer files, and no changes
+to the separate NAV/TSLA CAD cumulative benchmark are included.

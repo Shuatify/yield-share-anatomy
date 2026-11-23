@@ -20,5 +20,3 @@ jobs:
         run: uv sync --locked
       - name: Run offline tests
         run: uv run --locked pytest -q
-      - name: One-shot Yahoo price diagnostics (temporary)
-        run: uv run --locked python scripts/probe_yahoo_2026_missing_ytsl.py
