@@ -1,89 +1,75 @@
-# Yield Share Anatomy — Phase 0 (uv 版本)
+# Yield Share Anatomy
 
-这个项目获取并检查 YTSL 官方 NAV/市场价格、TSLA 历史价格和 USD/CAD。
-**尚未计算总回报**；`tests_yield/fixtures` 是**合成测试数据**。
+个人投资数据研究项目：基于 **YTSL（Purpose Tesla Yield Shares）**、TSLA 和 USD/CAD，复现历史总回报，审核数据质量，再研究市场环境表现。**研究与复现优先，不是交易信号，也暂不做网站。**
 
-## 只需要在 Mac 安装一次
+当前固定快照：**2022-12-19 至 2026-11-20**（共 985 条 Purpose NAV 记录）。历史快照已提交到 Git，日常分析**无需联网下载**。
 
-```bash
-brew install uv
-uv --version
-```
+## 快速开始
 
-## 项目首次初始化
-
-在解压的项目目录里运行：
+要求 Python 3.13、[uv](https://docs.astral.sh/uv/)；从项目根目录执行：
 
 ```bash
-./setup.sh
+uv sync --locked
+uv run --locked pytest -q
 ```
 
-脚本依次执行：
-1. `uv python install 3.13`：准备项目使用的 Python 3.13
-2. `uv sync`：根据 `pyproject.toml` 生成 `uv.lock`，建立 `.venv` 并安装依赖
-3. `uv run pytest -q`：运行测试
-4. 使用合成 fixture 数据跑一次离线端到端流程
+测试包含合成数据单元测试，以及**基于仓库内真实历史 CSV 的离线回归测试**。输入 SHA-256、官方收益对账、原始回报与市场价补充结果均会校验。
 
-**注意：本压缩包没有预生成 `uv.lock`。** 当前制作环境的 uv 包索引缓存不完整、网络不可用，无法可靠生成锁文件，因此首次运行 `uv sync` 时会在你的 Mac 上联网生成它。生成后应提交到 Git，这样以后可使用 `uv sync --locked` 获得可重复的依赖环境。
-
-如果之前在同一项目目录用传统 venv 建过 `.venv`，建议先退出已激活的环境 (`deactivate`)，然后由 `uv sync` 管理。如果发现 Python 版本与本项目固定的 3.13 不符，可删除**项目目录内**的 `.venv` 并重新运行 `uv sync`。
-
-## 真实数据下载
+运行研究（顺序为：先主回报，再月度稳健性分析；其余对账可独立运行）：
 
 ```bash
-uv run --locked python yield_share_phase0_fetch.py --out yield_share_phase0_data
+uv run --locked python -m yield_share_anatomy.returns
+uv run --locked python -m yield_share_anatomy.regimes
+uv run --locked python -m yield_share_anatomy.nav
+uv run --locked python -m yield_share_anatomy.benchmark
+uv run --locked python -m yield_share_anatomy.market
 ```
 
-需要网络。输出包括三个原始序列的 CSV、`aligned_daily_preview.csv` 和 `fetch_status.json`。注意后者尚不包含现金及非现金分红的完整处理，**不能将预览 CSV 当作已校验的总回报数据**。
+所有新计算结果写入**被 Git 忽略的** `outputs/`；不会改写 `data/` 快照或已有研究证据。
 
-## 日常命令
+## 文件结构
+
+```text
+yield_share_anatomy/                   # 可复用 Python 模块
+  paths.py                             # 统一输入/输出路径
+  fetch.py                             # 按需获取新数据，不参与离线日常研究
+  returns.py                           # Phase 1 探索性总回报与 monthly regimes
+  nav.py                               # Purpose 官方 NAV Total Return 对账
+  benchmark.py                         # TSLA USD/CAD 与交易日日历检查
+  market.py                            # Purpose / Yahoo Market Price 数据质量
+  regimes.py                           # Market Regime 阈值敏感性
+data/
+  raw/purpose/                         # 浏览器下载的原始 Purpose CSV（不修改）
+  snapshots/2026-11-20/                # 固定的 YTSL / TSLA / FX 标准化输入
+  events/                              # 现金分配与 notional 事件
+  reference/                           # Yahoo 对异常市场价的核查快照
+tests/                                 # 合成数据 + 离线真实快照回归测试
+research/
+  baselines/2026-11-20/                # 此前已提交的研究产出原样归档
+  validation/                          # 数据核验、历史结论与来源记录
+docs/
+  DATA.md                              # 输入、来源、复现与更新约定
+  history/                             # 早期 Phase 0/1 文档，只供追溯
+outputs/                               # 新计算结果（不入库）
+```
+
+## 已核实的范围与未解问题
+
+- **NAV Total Return**：与 Purpose 截至 2026-10-30 的七组公开回报对账，7/7 符合预设诊断容差；2022-12-21 至 2026-11-20 NAV DRIP 约 **+120.4114%**。
+- **TSLA CAD 基准**：同一比较区间约 **+164.5447%**；累计差距 **−44.1333 个百分点**。独立日历检查确认这一端点差值没有被旧共同日历过滤改变。
+- **Market Price**：Purpose 原始文件有若干异常/缺失。Yahoo 证据支持五条衍生价格补充，两条暂不使用；原始 CSV 保持不变。旧 Market DRIP 仍为探索性结果，**不能与已对账的 NAV 路径等同**。
+- **分配数据**：47 条现金分配记录仍需逐项与发行方公告核对，尤其 2023 年 notional 与 tax-factor 分类。市场环境（月度 regime）结果尚未单独完成研究级别的验证。
+
+详情参见 [数据与复现说明](docs/DATA.md) 和 [2026-11-20 日历对账](research/validation/2026-11-20-calendar-audit.md)。
+
+## 如何更新数据
+
+**不要**直接覆盖 `data/snapshots/2026-11-20/`。如需下载最新行情，运行：
 
 ```bash
-uv run --locked pytest -q             # 运行测试
-uv run --locked python --version      # 查看项目 Python
-uv add matplotlib                     # 加运行时依赖并更新锁文件
-uv add --dev ruff                      # 加开发依赖
-uv sync --locked                       # 按已提交锁文件同步
-uv lock --check                        # 检查锁文件是否与项目声明一致
+uv run --locked python -m yield_share_anatomy.fetch \
+  --purpose-file data/raw/purpose/ytsl_2026-11-20.csv \
+  --out outputs/fetch
 ```
 
-`uv run` 自动使用项目 `.venv`，无需手动 `source .venv/bin/activate`；日常也不必使用 `pip install`。
-
-需要提交到 Git：`pyproject.toml`, `.python-version`, `uv.lock`, 代码与测试。
-不要提交：`.venv/`、`.pytest_cache/`、下载的投资数据（默认为 `.gitignore` 排除）。
-
-文档：
-- https://docs.astral.sh/uv/getting-started/installation/
-- https://docs.astral.sh/uv/guides/projects/
-- https://docs.astral.sh/uv/concepts/projects/sync/
-
-## Purpose 返回 HTTP 429 时（当前推荐流程）
-
-这是 Purpose 对自动 HTTP 请求返回的限流/防护响应，不是 `uv` 的问题。**不要循环快速重试或尝试伪造身份绕过限制。**
-
-1. 用浏览器打开 [Purpose 的 YTSL Performance 页面](https://www.purposeinvest.com/funds/tesla-yield-shares-purpose-etf/performance)，点击 **Download NAVs**；也可以直接打开官方 [CSV 下载地址](https://www.purposeinvest.com/api/nav?fundId=YTSL&seriesId=ETF)。
-2. 保存 CSV 到项目目录，命名为 `ytsl.csv`。
-3. 用本地文件运行；脚本不会再向 Purpose 发请求，但仍会尝试下载 TSLA 和 USD/CAD：
-
-```bash
-uv run --locked python yield_share_phase0_fetch.py \
-  --purpose-file ./ytsl.csv \
-  --out yield_share_phase0_data
-```
-
-今后只要 `yield_share_phase0_data/ytsl_purpose_daily.csv` 已存在，默认会读取本地缓存，避免重复访问 Purpose。想明确刷新时用 `--refresh-purpose`（只发一次正常请求；仍可能收到 429）。手动文件的优先级最高。
-
-```bash
-# 有缓存时，直接运行，不访问 Purpose
-uv run --locked python yield_share_phase0_fetch.py --out yield_share_phase0_data
-```
-
-**部分成功可以保存**：某个来源失败时，其他来源仍继续获取；成功的 CSV 会保存到输出目录，`fetch_status.json` 会记录 `status: partial` 及失败原因。`partial` 会返回退出码 2，以便脚本/CI 能识别不完整数据。只有三项数据都成功，才写入 `aligned_daily_preview.csv`；若重跑不完整，会清除旧的对齐文件，防止误用过期结果。
-
-可以执行下列命令验证本次更新：
-
-```bash
-uv run --locked pytest -q   # 目前 12 个自动化测试，包括 HTTP 429 的模拟
-```
-
-本次代码修改没有改变项目依赖，已有 `uv.lock` 不需要重建。
+这只更新临时工作区；想形成新的可审计快照，请按 [docs/DATA.md](docs/DATA.md) 的步骤另建日期目录并核验。Purpose 的 HTTP 429 可继续通过浏览器手动下载解决，避免自动密集重试。

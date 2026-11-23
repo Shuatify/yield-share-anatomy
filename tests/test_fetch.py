@@ -1,11 +1,9 @@
 """Synthetic fixture and input-validation tests; no real-market conclusions."""
 import json
 from pathlib import Path
-import sys
 import pandas as pd
 import pytest
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from yield_share_phase0_fetch import (parse_purpose, parse_yahoo, parse_boc,
+from yield_share_anatomy.fetch import (parse_purpose, parse_yahoo, parse_boc,
                                       load_fixtures, build_alignment, quality_metrics, DataProblem, save)
 
 FIX=Path(__file__).parent/'fixtures'
@@ -59,7 +57,7 @@ def test_synthetic_outputs_marked(tmp_path):
     assert (tmp_path/'aligned_daily_preview.csv').exists()
     assert json.loads((tmp_path/'fetch_status.json').read_text())['quality']['alignment']['rows']==6
 
-from yield_share_phase0_fetch import fetch_live
+from yield_share_anatomy.fetch import fetch_live
 
 
 class FakeResponse:
@@ -95,9 +93,9 @@ class FakeSession:
 
 
 def test_429_fetches_other_sources_and_reports_partial(tmp_path, monkeypatch):
-    from yield_share_phase0_fetch import parse_yahoo as py, parse_boc as pb
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
+    from yield_share_anatomy.fetch import parse_yahoo as py, parse_boc as pb
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
     session = FakeSession()
     data, errors, sources = fetch_live(session)
     assert sorted(data) == ['fx', 'tsla']
@@ -111,11 +109,11 @@ def test_429_fetches_other_sources_and_reports_partial(tmp_path, monkeypatch):
 
 
 def test_manual_purpose_file_skips_http_download(monkeypatch):
-    from yield_share_phase0_fetch import parse_yahoo as py, parse_boc as pb
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_purpose',
+    from yield_share_anatomy.fetch import parse_yahoo as py, parse_boc as pb
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_purpose',
                         lambda txt: parse_purpose(txt, min_rows=3))
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
     session = FakeSession()
     data, errors, sources = fetch_live(session, purpose_file=FIX/'purpose.csv')
     assert set(data) == {'fx', 'tsla', 'ytsl'}
@@ -125,11 +123,11 @@ def test_manual_purpose_file_skips_http_download(monkeypatch):
 
 
 def test_cached_purpose_skips_http_download(tmp_path, monkeypatch):
-    from yield_share_phase0_fetch import parse_yahoo as py, parse_boc as pb
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_purpose',
+    from yield_share_anatomy.fetch import parse_yahoo as py, parse_boc as pb
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_purpose',
                         lambda txt: parse_purpose(txt, min_rows=3))
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
-    monkeypatch.setattr('yield_share_phase0_fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_yahoo', lambda payload: py(payload, min_rows=3))
+    monkeypatch.setattr('yield_share_anatomy.fetch.parse_boc', lambda payload: pb(payload, min_rows=3))
     cache = tmp_path/'ytsl_purpose_daily.csv'
     cache.write_text((FIX/'purpose.csv').read_text())
     session = FakeSession()

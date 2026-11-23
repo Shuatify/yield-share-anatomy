@@ -2,11 +2,11 @@
 import pandas as pd
 import pytest
 
-from yield_share_benchmark_alignment import (
+from yield_share_anatomy.benchmark import (
     CalendarAuditError, align_independent_returns, build_tsla_fx_reference,
 )
-from yield_share_nav_reconciliation import compute_nav_index
-from yield_share_phase1_returns import compute_return_paths, map_events_to_common_dates
+from yield_share_anatomy.nav import compute_nav_index
+from yield_share_anatomy.returns import compute_return_paths, map_events_to_common_dates
 
 
 def series(dates, key, values):

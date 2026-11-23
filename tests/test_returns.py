@@ -1,10 +1,8 @@
 """Math and input tests for Phase 1. Only synthetic prices; real cash seed is public source facts."""
 from pathlib import Path
-import sys
 import pandas as pd
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from yield_share_phase1_returns import (
+from yield_share_anatomy.returns import (
  read_cash_events, annual_distribution_audit, build_common_calendar,
  map_events_to_common_dates, compute_return_paths, regimes_from_daily,
  ResearchDataError,

@@ -1,10 +1,8 @@
 """Market price source anomaly regression tests (synthetic mini-series)."""
 from pathlib import Path
-import sys
 import pandas as pd
 import pytest
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from yield_share_phase1_returns import audit_market_prices, build_common_calendar, ResearchDataError
+from yield_share_anatomy.returns import audit_market_prices, build_common_calendar, ResearchDataError
 
 
 def fixture():

@@ -2,9 +2,9 @@
 """Yield Share Anatomy: inspect YTSL, TSLA and USD/CAD historical inputs.
 
 Examples:
-  python yield_share_phase0_fetch.py --out /mnt/data/yield_share_live
-  python yield_share_phase0_fetch.py --fixture-dir tests_yield/fixtures --out /mnt/data/yield_share_demo
-  python yield_share_phase0_fetch.py --purpose-file ytsl.csv --out yield_share_phase0_data
+  python -m yield_share_anatomy.fetch --out /mnt/data/yield_share_live
+  python -m yield_share_anatomy.fetch --fixture-dir tests/fixtures --out /mnt/data/yield_share_demo
+  python -m yield_share_anatomy.fetch --purpose-file data/raw/purpose/ytsl_2026-11-20.csv --out outputs/fetch
 
 Fixture data is SYNTHETIC and never suitable for published investment analysis.
 This collects and validates source inputs; it does NOT compute ETF total returns.
@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 from io import StringIO
 import json
 from pathlib import Path
+
+from .paths import OUTPUT_DIR
 import sys
 
 import pandas as pd
@@ -236,7 +238,7 @@ def main(argv=None) -> int:
                     help="Use an official Purpose CSV downloaded in browser; skip Purpose HTTP request")
     ap.add_argument("--refresh-purpose", action="store_true",
                     help="Force one Purpose HTTP request even if its previous CSV is cached")
-    ap.add_argument("--out", type=Path, default=Path("yield_share_phase0_data"))
+    ap.add_argument("--out", type=Path, default=OUTPUT_DIR / "fetch")
     args = ap.parse_args(argv)
     if args.fixture_dir and (args.purpose_file or args.refresh_purpose):
         ap.error("--fixture-dir cannot be combined with --purpose-file or --refresh-purpose")

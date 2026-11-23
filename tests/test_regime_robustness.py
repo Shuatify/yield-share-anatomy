@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from yield_share_regime_robustness import analyze, describe_group, get_regime, load_months
+from yield_share_anatomy.regimes import analyze, describe_group, get_regime, load_months
 
 
 class RobustnessTests(unittest.TestCase):
