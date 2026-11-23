@@ -1,0 +1,58 @@
+{
+  "status": "ok",
+  "data_type": "SYNTHETIC_TEST_FIXTURE",
+  "sources": {
+    "ytsl": "https://www.purposeinvest.com/api/nav?fundId=YTSL&seriesId=ETF",
+    "tsla": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA",
+    "fx": "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json"
+  },
+  "quality": {
+    "ytsl": {
+      "rows": 6,
+      "start": "2026-11-09",
+      "end": "2026-11-16",
+      "duplicate_dates": 0,
+      "null_values": {
+        "nav": 0,
+        "price": 1
+      },
+      "nonpositive_values": {
+        "nav": 0,
+        "price": 0
+      }
+    },
+    "tsla": {
+      "rows": 6,
+      "start": "2026-11-09",
+      "end": "2026-11-16",
+      "duplicate_dates": 0,
+      "null_values": {
+        "close_usd": 0,
+        "adj_close_usd": 0
+      },
+      "nonpositive_values": {
+        "close_usd": 0,
+        "adj_close_usd": 0
+      }
+    },
+    "fx": {
+      "rows": 5,
+      "start": "2026-11-09",
+      "end": "2026-11-16",
+      "duplicate_dates": 0,
+      "null_values": {
+        "usd_cad": 0
+      },
+      "nonpositive_values": {
+        "usd_cad": 0
+      }
+    },
+    "alignment": {
+      "rows": 6,
+      "tsla_missing_on_ytsl_days": 0,
+      "fx_missing": 0,
+      "fx_carried_forward_days": 1
+    }
+  },
+  "warning": "No total returns computed; non-cash distributions and company actions not integrated."
+}
