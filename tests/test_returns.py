@@ -57,8 +57,8 @@ def test_bad_event_gt5days_refused():
 
 
 def test_notional_2023_not_counted_as_cash():
-    e=read_cash_events(ROOT/'data/ytsl_cash_distributions.csv')
-    audit=annual_distribution_audit(e,ROOT/'data/ytsl_notional_events.csv').set_index('year')
+    e=read_cash_events(ROOT/'data/events/ytsl_cash_distributions.csv')
+    audit=annual_distribution_audit(e,ROOT/'data/events/ytsl_notional_events.csv').set_index('year')
     assert len(e)==47
     assert audit.loc[2023,'monthly_cash_sum']==pytest.approx(3.9969)
     assert audit.loc[2023,'final_notional_events_sum']==pytest.approx(2.07)
