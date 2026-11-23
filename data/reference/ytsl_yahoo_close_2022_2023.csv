@@ -1,0 +1,6 @@
+date,open,high,low,close,volume,source,retrieved_at_utc
+2022-12-20,19.53,19.53,18.58,18.29,1378,Yahoo Finance YTSL.NE Chart API,2026-11-23
+2022-12-22,17.56,17.67,16.17,16.35,11235,Yahoo Finance YTSL.NE Chart API,2026-11-23
+2022-12-30,15.54,15.68,15.42,15.66,775,Yahoo Finance YTSL.NE Chart API,2026-11-23
+2023-01-03,14.94,14.94,12.84,13.31,8280,Yahoo Finance YTSL.NE Chart API,2026-11-23
+2023-01-04,13.53,14.01,13.31,13.95,8248,Yahoo Finance YTSL.NE Chart API,2026-11-23
