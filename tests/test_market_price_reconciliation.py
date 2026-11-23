@@ -1,7 +1,7 @@
 """Offline tests for source-aware market-price fallback, no live requests."""
 import pandas as pd
 import pytest
-from yield_share_market_price_reconciliation import reconcile_market_prices
+from yield_share_anatomy.market import reconcile_market_prices
 
 
 def issuer():
@@ -123,7 +123,7 @@ def test_missing_2026_price_on_distribution_ex_date_can_be_substituted():
 
 
 def test_multiple_reference_files_are_joined_with_input_hashes(tmp_path):
-    from yield_share_market_price_reconciliation import run
+    from yield_share_anatomy.market import run
     purpose = tmp_path / 'purpose.csv'
     purpose.write_text(
         'date,nav,price\n2022-12-22,16.25,22.33\n'
@@ -155,7 +155,7 @@ def test_multiple_reference_files_are_joined_with_input_hashes(tmp_path):
 
 
 def test_duplicate_dates_across_reference_files_rejected(tmp_path):
-    from yield_share_market_price_reconciliation import run
+    from yield_share_anatomy.market import run
     purpose = tmp_path / 'purpose.csv'
     purpose.write_text('date,nav,price\n2026-06-23,18.55,\n')
     yahoo_data = ('date,open,high,low,close,volume\n'

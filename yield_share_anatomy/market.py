@@ -13,6 +13,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from .paths import SNAPSHOT_DIR, CASH_EVENTS, NOTIONAL_EVENTS, OUTPUT_DIR
+
 import pandas as pd
 
 PREMIUM_THRESHOLD_PCT = 10.0
@@ -99,7 +101,7 @@ def _hash(path: Path) -> str:
 
 
 def _distribution_ex_dates(cash_file: Path, notional_file: Path) -> set[pd.Timestamp]:
-    from yield_share_phase1_returns import read_cash_events
+    from yield_share_anatomy.returns import read_cash_events
     cash = read_cash_events(cash_file)
     notional = pd.read_csv(notional_file, parse_dates=['ex_date'])
     if not {'ex_date', 'kind'}.issubset(notional):
@@ -150,15 +152,15 @@ def run(purpose_file: Path, yahoo_files: list[Path] | Path, cash_file: Path,
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--purpose', type=Path,
-                    default=Path('yield_share_phase0_data/ytsl_purpose_daily.csv'))
+                    default=SNAPSHOT_DIR / 'ytsl_purpose_daily.csv')
     ap.add_argument('--yahoo', type=Path, action='append',
                     help='Yahoo OHLCV snapshot, repeatable; default uses two dated reference files')
     ap.add_argument('--events', type=Path,
-                    default=Path('data/ytsl_cash_distributions.csv'))
+                    default=CASH_EVENTS)
     ap.add_argument('--notional', type=Path,
-                    default=Path('data/ytsl_notional_events.csv'))
+                    default=NOTIONAL_EVENTS)
     ap.add_argument('--out', type=Path,
-                    default=Path('yield_share_phase1_results/market_price_quality'))
+                    default=OUTPUT_DIR / 'market_price_quality')
     args = ap.parse_args()
     try:
         references = args.yahoo if args.yahoo is not None else [

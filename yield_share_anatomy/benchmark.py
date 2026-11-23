@@ -13,9 +13,11 @@ import json
 import math
 from pathlib import Path
 
+from .paths import SNAPSHOT_DIR, CASH_EVENTS, OUTPUT_DIR
+
 import pandas as pd
 
-from yield_share_nav_reconciliation import compute_nav_index, load_nav
+from yield_share_anatomy.nav import compute_nav_index, load_nav
 
 
 class CalendarAuditError(ValueError):
@@ -93,7 +95,7 @@ def _sha256(path: Path) -> str:
 
 def run(data_dir: Path, cash_file: Path, out_dir: Path, *,
         allow_synthetic: bool = False) -> dict:
-    from yield_share_phase1_returns import (
+    from yield_share_anatomy.returns import (
         build_common_calendar, compute_return_paths, map_events_to_common_dates,
         read_cash_events, read_observations,
     )
@@ -175,9 +177,9 @@ def run(data_dir: Path, cash_file: Path, out_dir: Path, *,
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data-dir', type=Path, default=Path('yield_share_phase0_data'))
-    parser.add_argument('--events', type=Path, default=Path('data/ytsl_cash_distributions.csv'))
-    parser.add_argument('--out', type=Path, default=Path('yield_share_phase1_results/benchmark_calendar'))
+    parser.add_argument('--data-dir', type=Path, default=SNAPSHOT_DIR)
+    parser.add_argument('--events', type=Path, default=CASH_EVENTS)
+    parser.add_argument('--out', type=Path, default=OUTPUT_DIR / 'benchmark_calendar')
     parser.add_argument('--allow-synthetic', action='store_true', help='For offline synthetic smoke tests only')
     args = parser.parse_args()
     try:

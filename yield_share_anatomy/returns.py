@@ -18,6 +18,8 @@ import argparse
 import json
 from pathlib import Path
 
+from .paths import SNAPSHOT_DIR, CASH_EVENTS, NOTIONAL_EVENTS, OUTPUT_DIR
+
 import pandas as pd
 
 DATA_FILES = {
@@ -322,10 +324,10 @@ def run(data_dir:Path, cash_events:Path, notional_events:Path, out:Path, *,
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data-dir',type=Path,default=Path('yield_share_phase0_data'))
-    parser.add_argument('--events',type=Path,default=Path('data/ytsl_cash_distributions.csv'))
-    parser.add_argument('--notional',type=Path,default=Path('data/ytsl_notional_events.csv'))
-    parser.add_argument('--out',type=Path,default=Path('yield_share_phase1_results'))
+    parser.add_argument('--data-dir',type=Path,default=SNAPSHOT_DIR)
+    parser.add_argument('--events',type=Path,default=CASH_EVENTS)
+    parser.add_argument('--notional',type=Path,default=NOTIONAL_EVENTS)
+    parser.add_argument('--out',type=Path,default=OUTPUT_DIR / 'phase1')
     parser.add_argument('--allow-synthetic',action='store_true',help='Only for smoke testing')
     parser.add_argument('--market-premium-threshold-pct',type=float,default=MAX_MARKET_PREMIUM_PCT, help='Flag/exclude YTSL market prices diverging from same-day NAV by over this percentage (default: 10)')
     args=parser.parse_args()

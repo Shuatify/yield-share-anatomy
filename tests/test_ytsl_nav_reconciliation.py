@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 
-from yield_share_nav_reconciliation import compute_nav_index, load_nav, reconcile
+from yield_share_anatomy.nav import compute_nav_index, load_nav, reconcile
 
 
 def nav_table(dates, values):

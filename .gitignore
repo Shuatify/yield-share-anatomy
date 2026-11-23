@@ -1,10 +1,20 @@
+# Python and uv runtime
 .venv/
 __pycache__/
 .pytest_cache/
-*.pyc
-.DS_Store
+*.py[cod]
 
-# Environment
+# Local/generated research outputs; never commit transient fetches
+outputs/
+
+# Legacy generated locations from before repository reorganization
+yield_share_phase0_data/
+yield_share_phase0_fixture_data/
+yield_share_phase1_results/
+yield_share_phase1_robustness/
+/ytsl.csv
+
+# Local environment
+.DS_Store
 .env
 .env.*
-

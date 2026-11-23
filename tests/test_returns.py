@@ -1,10 +1,8 @@
 """Math and input tests for Phase 1. Only synthetic prices; real cash seed is public source facts."""
 from pathlib import Path
-import sys
 import pandas as pd
 import pytest
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from yield_share_phase1_returns import (
+from yield_share_anatomy.returns import (
  read_cash_events, annual_distribution_audit, build_common_calendar,
  map_events_to_common_dates, compute_return_paths, regimes_from_daily,
  ResearchDataError,
@@ -59,8 +57,8 @@ def test_bad_event_gt5days_refused():
 
 
 def test_notional_2023_not_counted_as_cash():
-    e=read_cash_events(ROOT/'data/ytsl_cash_distributions.csv')
-    audit=annual_distribution_audit(e,ROOT/'data/ytsl_notional_events.csv').set_index('year')
+    e=read_cash_events(ROOT/'data/events/ytsl_cash_distributions.csv')
+    audit=annual_distribution_audit(e,ROOT/'data/events/ytsl_notional_events.csv').set_index('year')
     assert len(e)==47
     assert audit.loc[2023,'monthly_cash_sum']==pytest.approx(3.9969)
     assert audit.loc[2023,'final_notional_events_sum']==pytest.approx(2.07)

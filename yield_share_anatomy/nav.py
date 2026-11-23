@@ -13,6 +13,8 @@ import json
 import math
 from pathlib import Path
 
+from .paths import SNAPSHOT_DIR, CASH_EVENTS, OUTPUT_DIR
+
 import pandas as pd
 
 OFFICIAL_AS_OF = pd.Timestamp('2026-10-30')
@@ -146,7 +148,7 @@ def sha256(path: Path) -> str:
 def run(nav_file: Path, cash_file: Path, out: Path,
         tolerance_pp: float = 0.20) -> dict:
     # Reuse Phase 1's cash event validation. No duplicate event parser.
-    from yield_share_phase1_returns import read_cash_events
+    from yield_share_anatomy.returns import read_cash_events
 
     nav = load_nav(nav_file)
     events = read_cash_events(cash_file)
@@ -184,11 +186,11 @@ def run(nav_file: Path, cash_file: Path, out: Path,
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--nav', type=Path,
-                        default=Path('yield_share_phase0_data/ytsl_purpose_daily.csv'))
+                        default=SNAPSHOT_DIR / 'ytsl_purpose_daily.csv')
     parser.add_argument('--events', type=Path,
-                        default=Path('data/ytsl_cash_distributions.csv'))
+                        default=CASH_EVENTS)
     parser.add_argument('--out', type=Path,
-                        default=Path('yield_share_phase1_results/nav_reconciliation'))
+                        default=OUTPUT_DIR / 'nav_reconciliation')
     parser.add_argument('--tolerance-pp', type=float, default=0.20)
     args = parser.parse_args()
     try:

@@ -13,6 +13,8 @@ import math
 import statistics
 from pathlib import Path
 
+from .paths import OUTPUT_DIR
+
 REQUIRED = {
     "month", "tsla_monthly_pct", "ytsl_nav_drip_monthly_pct",
     "ytsl_market_drip_monthly_pct", "gap_pp"
@@ -100,8 +102,8 @@ def analyze(rows: list[dict], thresholds: tuple[float, ...] = THRESHOLDS) -> dic
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--monthly", type=Path, default=Path("yield_share_phase1_results/monthly_regimes.csv"))
-    parser.add_argument("--out", type=Path, default=Path("yield_share_phase1_robustness"))
+    parser.add_argument("--monthly", type=Path, default=OUTPUT_DIR / "phase1" / "monthly_regimes.csv")
+    parser.add_argument("--out", type=Path, default=OUTPUT_DIR / "regime_robustness")
     args = parser.parse_args()
     try:
         result = analyze(load_months(args.monthly))
