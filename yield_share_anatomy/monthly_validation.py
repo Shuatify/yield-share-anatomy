@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import statistics
+import math
 from pathlib import Path
 
 import pandas as pd
@@ -80,8 +80,16 @@ def independent_monthly(nav_index: pd.DataFrame, tsla_fx: pd.DataFrame,
     merged["tsla_cad_monthly_pct"] = 100 * (
         merged["tsla_end_cad"] / merged["tsla_end_cad"].shift(1) - 1)
     merged["gap_pp"] = merged["nav_monthly_pct"] - merged["tsla_cad_monthly_pct"]
-    merged["regime"] = merged["tsla_cad_monthly_pct"].map(
-        lambda r: get_regime(float(r), threshold_pct) if pd.notna(r) else None)
+    def classify(r: float) -> str | None:
+        if pd.isna(r):
+            return None
+        # Exact threshold boundaries belong to Sideways. Avoid classifying
+        # 105/100 - 1 (5.000000000000004%) as an Up month.
+        if math.isclose(abs(float(r)), threshold_pct, rel_tol=0, abs_tol=1e-10):
+            return "Sideways"
+        return get_regime(float(r), threshold_pct)
+
+    merged["regime"] = merged["tsla_cad_monthly_pct"].map(classify)
     month_cash = nav_index.loc[nav_index["cash_per_unit"] > 0].copy()
     month_cash["month"] = month_cash["date"].dt.to_period("M").astype(str)
     amounts = month_cash.groupby("month")["cash_per_unit"].sum()
