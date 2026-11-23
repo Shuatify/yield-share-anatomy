@@ -22,6 +22,7 @@ jobs:
         run: uv run --locked pytest -q
       - name: Smoke-test offline research entrypoints
         run: |
+          uv run --locked python -m yield_share_anatomy.fetch --fixture-dir tests/fixtures --out outputs/fixture_fetch > /dev/null
           uv run --locked python -m yield_share_anatomy.returns > /dev/null
           uv run --locked python -m yield_share_anatomy.nav > /dev/null
           uv run --locked python -m yield_share_anatomy.benchmark > /dev/null
