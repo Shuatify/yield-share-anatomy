@@ -1,0 +1,8 @@
+date,nav,purpose_price,yahoo_open,yahoo_high,yahoo_low,yahoo_close,yahoo_volume,source,retrieved_at_utc,reference_file,purpose_premium_pct,yahoo_premium_pct,flagged,yahoo_ohlcv_valid,yahoo_nav_plausible,is_distribution_ex_date,resolution,research_price,research_price_source
+2022-12-19,20.0,,,,,,,,,,,,True,False,False,False,exclude_unverified,,unresolved
+2022-12-20,18.17,24.89,19.53,19.53,18.58,18.29,1378.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2022_2023.csv,36.984039625756736,0.6604292790313604,True,False,True,False,exclude_unverified,,unresolved
+2022-12-22,16.25,22.33,17.56,17.67,16.17,16.35,11235.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2022_2023.csv,37.4153846153846,0.6153846153846176,True,True,True,False,yahoo_substitute,16.35,Yahoo Finance Close
+2023-01-03,13.28,15.66,14.94,14.94,12.84,13.31,8280.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2022_2023.csv,17.92168674698795,0.22590361445784524,True,True,True,False,yahoo_substitute,13.31,Yahoo Finance Close
+2023-01-04,14.03,15.66,13.53,14.01,13.31,13.95,8248.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2022_2023.csv,11.61796151104777,-0.5702066999287214,True,True,True,False,yahoo_substitute,13.95,Yahoo Finance Close
+2026-06-23,18.55,,19.25,19.25,18.43,18.57,755183.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2026.csv,,0.10781671159030282,True,True,True,False,yahoo_substitute,18.57,Yahoo Finance Close
+2026-11-02,17.32,,17.3,17.77,17.05,17.33,414900.0,Yahoo Finance YTSL.NE Chart API,2026-11-23,data/reference/ytsl_yahoo_close_2026.csv,,0.05773672055426893,True,True,True,False,yahoo_substitute,17.33,Yahoo Finance Close

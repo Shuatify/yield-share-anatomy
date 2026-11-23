@@ -1,0 +1,24 @@
+{
+  "status": "diagnostic_only",
+  "resolution_counts": {
+    "issuer": 978,
+    "yahoo_substitute": 5,
+    "exclude_unverified": 2
+  },
+  "premium_threshold_pct": 10.0,
+  "yahoo_validation": "Close/Open inside OHLC +/-0.01; volume >0; abs(Close/NAV - 1) <=10%",
+  "secondary_source_labels": [
+    "Yahoo Finance YTSL.NE Chart API"
+  ],
+  "secondary_retrieval_dates": [
+    "2026-11-23"
+  ],
+  "input_sha256": {
+    "yield_share_phase0_data/ytsl_purpose_daily.csv": "a0a6c90c3d804c354bc53ef384630f8b0abff6d5fdb5d318cb75ca65ea6e76f7",
+    "data/reference/ytsl_yahoo_close_2022_2023.csv": "536c09256b5f4a2790b8148ef0fcb04193476807e27a1ea69b4d362950fd895f",
+    "data/reference/ytsl_yahoo_close_2026.csv": "1c7c9fcb0c5b5e1db1129239d271dccae350846af559f80f5f320bfde1edeac2",
+    "data/ytsl_cash_distributions.csv": "7142c89fa4e15efeef67b87d6d11e32a914863caee47b2b72dfa2422d226108e",
+    "data/ytsl_notional_events.csv": "8f7e748c15a03a5bd8b272afef251f0cf6be13d505dde039faca0eb71783f01e"
+  },
+  "warning": "Derived market-price diagnostic only; does not modify raw CSV or NAV returns."
+}

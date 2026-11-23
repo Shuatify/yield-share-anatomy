@@ -1,0 +1,19 @@
+{
+  "status": "pass",
+  "research_status": "provisional_distribution_seed",
+  "issuer_source": "https://www.purposeinvest.com/funds/tesla-yield-shares-purpose-etf/performance",
+  "issuer_as_of": "2026-10-30",
+  "nav_observations": 985,
+  "cash_events_in_nav_range": 47,
+  "nav_sha256": "a0a6c90c3d804c354bc53ef384630f8b0abff6d5fdb5d318cb75ca65ea6e76f7",
+  "cash_events_sha256": "7142c89fa4e15efeef67b87d6d11e32a914863caee47b2b72dfa2422d226108e",
+  "tolerance_pp": 0.2,
+  "reconciliation_rule": "exact as-of; prior calendar month-ends mapped backward by <=7 days",
+  "reinvestment_rule": "cash entitlement on exact ex-date; reinvest at closing NAV; notional excluded",
+  "annualization_day_count": 365.25,
+  "unverified_items": [
+    "cash distribution seed not fully issuer crosschecked",
+    "issuer exact anchor date and annualization convention",
+    "notional NAV/unit consolidation handling"
+  ]
+}

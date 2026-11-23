@@ -1,0 +1,243 @@
+{
+  "status": "ok",
+  "research_status": "PROVISIONAL: distribution source audit not complete; historical association is not causal attribution",
+  "month_count": 46,
+  "first_month": "2023-01",
+  "last_month": "2026-10",
+  "overall_monthly_nav_win_count": 23,
+  "overall_monthly_nav_win_rate_pct": 50.0,
+  "overall_mean_monthly_gap_pp": -0.1399,
+  "overall_median_monthly_gap_pp": -0.0917,
+  "threshold_sensitivity": [
+    {
+      "threshold_pct": 3.0,
+      "regimes": [
+        {
+          "regime": "Up",
+          "months": 20,
+          "nav_gap_mean_pp": 0.5149,
+          "nav_gap_median_pp": 0.7042,
+          "nav_win_rate_pct": 55.0,
+          "market_gap_mean_pp": 0.6759,
+          "market_win_rate_pct": 55.0,
+          "leave_one_out_nav_mean_range_pp": [
+            0.2185,
+            0.7839
+          ]
+        },
+        {
+          "regime": "Sideways",
+          "months": 11,
+          "nav_gap_mean_pp": 0.019,
+          "nav_gap_median_pp": 0.0408,
+          "nav_win_rate_pct": 54.55,
+          "market_gap_mean_pp": 0.0185,
+          "market_win_rate_pct": 54.55,
+          "leave_one_out_nav_mean_range_pp": [
+            -0.3244,
+            0.4865
+          ]
+        },
+        {
+          "regime": "Down",
+          "months": 15,
+          "nav_gap_mean_pp": -1.1296,
+          "nav_gap_median_pp": -1.4612,
+          "nav_win_rate_pct": 40.0,
+          "market_gap_mean_pp": -1.3437,
+          "market_win_rate_pct": 26.67,
+          "leave_one_out_nav_mean_range_pp": [
+            -1.3567,
+            -0.8682
+          ]
+        }
+      ]
+    },
+    {
+      "threshold_pct": 5.0,
+      "regimes": [
+        {
+          "regime": "Up",
+          "months": 18,
+          "nav_gap_mean_pp": 0.0289,
+          "nav_gap_median_pp": 0.0069,
+          "nav_win_rate_pct": 50.0,
+          "market_gap_mean_pp": 0.2538,
+          "market_win_rate_pct": 50.0,
+          "leave_one_out_nav_mean_range_pp": [
+            -0.2783,
+            0.3009
+          ]
+        },
+        {
+          "regime": "Sideways",
+          "months": 15,
+          "nav_gap_mean_pp": 0.8966,
+          "nav_gap_median_pp": 1.9017,
+          "nav_win_rate_pct": 66.67,
+          "market_gap_mean_pp": 0.7003,
+          "market_win_rate_pct": 60.0,
+          "leave_one_out_nav_mean_range_pp": [
+            0.5217,
+            1.2932
+          ]
+        },
+        {
+          "regime": "Down",
+          "months": 13,
+          "nav_gap_mean_pp": -1.5697,
+          "nav_gap_median_pp": -1.7725,
+          "nav_win_rate_pct": 30.77,
+          "market_gap_mean_pp": -1.6545,
+          "market_win_rate_pct": 23.08,
+          "leave_one_out_nav_mean_range_pp": [
+            -1.8277,
+            -1.3015
+          ]
+        }
+      ]
+    },
+    {
+      "threshold_pct": 8.0,
+      "regimes": [
+        {
+          "regime": "Up",
+          "months": 16,
+          "nav_gap_mean_pp": 0.0209,
+          "nav_gap_median_pp": 0.0069,
+          "nav_win_rate_pct": 50.0,
+          "market_gap_mean_pp": 0.267,
+          "market_win_rate_pct": 50.0,
+          "leave_one_out_nav_mean_range_pp": [
+            -0.3277,
+            0.3287
+          ]
+        },
+        {
+          "regime": "Sideways",
+          "months": 21,
+          "nav_gap_mean_pp": 0.6279,
+          "nav_gap_median_pp": 1.4121,
+          "nav_win_rate_pct": 61.9,
+          "market_gap_mean_pp": 0.5044,
+          "market_win_rate_pct": 57.14,
+          "leave_one_out_nav_mean_range_pp": [
+            0.352,
+            0.8921
+          ]
+        },
+        {
+          "regime": "Down",
+          "months": 9,
+          "nav_gap_mean_pp": -2.2176,
+          "nav_gap_median_pp": -2.4649,
+          "nav_win_rate_pct": 22.22,
+          "market_gap_mean_pp": -2.3664,
+          "market_win_rate_pct": 11.11,
+          "leave_one_out_nav_mean_range_pp": [
+            -2.6118,
+            -1.8962
+          ]
+        }
+      ]
+    },
+    {
+      "threshold_pct": 10.0,
+      "regimes": [
+        {
+          "regime": "Up",
+          "months": 15,
+          "nav_gap_mean_pp": 0.0681,
+          "nav_gap_median_pp": 0.572,
+          "nav_win_rate_pct": 53.33,
+          "market_gap_mean_pp": 0.3425,
+          "market_win_rate_pct": 53.33,
+          "leave_one_out_nav_mean_range_pp": [
+            -0.3021,
+            0.4012
+          ]
+        },
+        {
+          "regime": "Sideways",
+          "months": 24,
+          "nav_gap_mean_pp": 0.5671,
+          "nav_gap_median_pp": 1.0547,
+          "nav_win_rate_pct": 62.5,
+          "market_gap_mean_pp": 0.3856,
+          "market_win_rate_pct": 54.17,
+          "leave_one_out_nav_mean_range_pp": [
+            0.3246,
+            0.7942
+          ]
+        },
+        {
+          "regime": "Down",
+          "months": 7,
+          "nav_gap_mean_pp": -3.01,
+          "nav_gap_median_pp": -2.6064,
+          "nav_win_rate_pct": 0.0,
+          "market_gap_mean_pp": -2.9752,
+          "market_win_rate_pct": 0.0,
+          "leave_one_out_nav_mean_range_pp": [
+            -3.2682,
+            -2.7136
+          ]
+        }
+      ]
+    }
+  ],
+  "largest_ytsl_underperformances": [
+    {
+      "month": "2023-10",
+      "gap_pp": -4.7886,
+      "tsla_pct": -17.6508
+    },
+    {
+      "month": "2024-10",
+      "gap_pp": -4.6561,
+      "tsla_pct": -1.5525
+    },
+    {
+      "month": "2024-12",
+      "gap_pp": -4.596,
+      "tsla_pct": 20.1659
+    },
+    {
+      "month": "2023-08",
+      "gap_pp": -4.5181,
+      "tsla_pct": -0.9037
+    },
+    {
+      "month": "2024-01",
+      "gap_pp": -4.2918,
+      "tsla_pct": -23.6512
+    }
+  ],
+  "largest_ytsl_outperformances": [
+    {
+      "month": "2025-04",
+      "gap_pp": 6.1453,
+      "tsla_pct": 4.6034
+    },
+    {
+      "month": "2023-11",
+      "gap_pp": 5.2504,
+      "tsla_pct": 17.0474
+    },
+    {
+      "month": "2026-10",
+      "gap_pp": 4.0995,
+      "tsla_pct": 10.872
+    },
+    {
+      "month": "2025-10",
+      "gap_pp": 3.6325,
+      "tsla_pct": 3.3777
+    },
+    {
+      "month": "2023-12",
+      "gap_pp": 3.4532,
+      "tsla_pct": 0.786
+    }
+  ]
+}

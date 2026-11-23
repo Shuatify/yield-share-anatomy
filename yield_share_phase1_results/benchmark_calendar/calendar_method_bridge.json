@@ -1,0 +1,64 @@
+{
+  "status": "diagnostic_only",
+  "data_type": "LIVE_SOURCE_DATA",
+  "legacy_start": "2022-12-21",
+  "legacy_end": "2026-11-20",
+  "legacy_common_days": 958,
+  "nav_trading_days_in_window": 983,
+  "independent_exact_shared_days": 963,
+  "independent_shared_days_removed_by_legacy_filters": [
+    "2022-12-22",
+    "2023-01-03",
+    "2023-01-04",
+    "2026-06-23",
+    "2026-11-02"
+  ],
+  "cash_ex_dates_missing_from_legacy_common_calendar": [],
+  "legacy_event_mapping": {
+    "applied_cash_events": 47,
+    "excluded_events_at_or_before_start": 0,
+    "shifted_event_count": 0,
+    "shifted_events": []
+  },
+  "legacy_calendar_qc": {
+    "ytsl_dates": 985,
+    "common_valid_dates": 958,
+    "excluded_rows": 27,
+    "market_nav_premium_threshold_pct": 10.0,
+    "market_price_anomaly_count": 4,
+    "market_price_anomaly_dates": [
+      "2022-12-20",
+      "2022-12-22",
+      "2023-01-03",
+      "2023-01-04"
+    ],
+    "missing_tsla_on_ytsl_dates": 20,
+    "missing_ytsl_market_price": 3,
+    "fx_carryforward_days": 8,
+    "max_abs_nav_daily_pct": 26.71,
+    "max_abs_market_daily_pct": 21.562
+  },
+  "legacy_nav_drip_pct": 120.41139492221969,
+  "full_calendar_nav_drip_pct": 120.41139492221933,
+  "nav_calendar_effect_pp": -3.552713678800501e-13,
+  "legacy_tsla_cad_pct": 164.54468803302754,
+  "independent_tsla_cad_pct": 164.54468803302754,
+  "tsla_calendar_effect_pp": 0.0,
+  "independent_tsla_usd_pct": 151.37747249602586,
+  "legacy_nav_minus_tsla_cad_pp": -44.133293110807855,
+  "independent_nav_minus_tsla_cad_pp": -44.13329311080821,
+  "total_gap_method_effect_pp": -3.552713678800501e-13,
+  "input_sha256": {
+    "ytsl_purpose_daily.csv": "a0a6c90c3d804c354bc53ef384630f8b0abff6d5fdb5d318cb75ca65ea6e76f7",
+    "tsla_yahoo_daily.csv": "925076d6d488413b3c8246d206654d719186f3c73bd2bd5007ede1f9acd7c48b",
+    "usdcad_boc_daily.csv": "ffaca3a83de376bf4b47cc32a5b73015b1a1767933903c0f12a0ab8a119f0fbf",
+    "ytsl_cash_distributions.csv": "7142c89fa4e15efeef67b87d6d11e32a914863caee47b2b72dfa2422d226108e"
+  },
+  "methodology": {
+    "nav": "Full YTSL NAV daily index before shared-date alignment; cash at exact ex-date",
+    "tsla_usd": "Yahoo adjusted close ratio on actual US sessions",
+    "tsla_cad": "Yahoo adjusted close multiplied by BoC USD/CAD reference; FX as-of backward <=5 days",
+    "comparison": "Both methods rebased to identical legacy first and last common dates",
+    "limits": "Not a hedged benchmark, no leverage adjustment, and seed cash events remain provisional"
+  }
+}

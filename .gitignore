@@ -4,14 +4,6 @@ __pycache__/
 *.pyc
 .DS_Store
 
-# Downloaded data and generated results
-yield_share_phase0_data/
-yield_share_phase1_results/
-yield_share_phase1_robustness/
-
-# Locally downloaded data
-ytsl.csv
-
 # Environment
 .env
 .env.*

@@ -1,0 +1,65 @@
+{
+  "status": "ok",
+  "data_type": "LIVE_SOURCE_DATA",
+  "available": [
+    "fx",
+    "tsla",
+    "ytsl"
+  ],
+  "missing": [],
+  "errors": {},
+  "sources": {
+    "ytsl": "user-provided file: ytsl.csv",
+    "tsla": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA",
+    "fx": "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json"
+  },
+  "quality": {
+    "ytsl": {
+      "rows": 985,
+      "start": "2022-12-19",
+      "end": "2026-11-20",
+      "duplicate_dates": 0,
+      "null_values": {
+        "nav": 0,
+        "price": 3
+      },
+      "nonpositive_values": {
+        "nav": 0,
+        "price": 0
+      }
+    },
+    "tsla": {
+      "rows": 985,
+      "start": "2022-12-19",
+      "end": "2026-11-20",
+      "duplicate_dates": 0,
+      "null_values": {
+        "close_usd": 0,
+        "adj_close_usd": 0
+      },
+      "nonpositive_values": {
+        "close_usd": 0,
+        "adj_close_usd": 0
+      }
+    },
+    "fx": {
+      "rows": 977,
+      "start": "2022-12-19",
+      "end": "2026-11-20",
+      "duplicate_dates": 0,
+      "null_values": {
+        "usd_cad": 0
+      },
+      "nonpositive_values": {
+        "usd_cad": 0
+      }
+    },
+    "alignment": {
+      "rows": 985,
+      "tsla_missing_on_ytsl_days": 20,
+      "fx_missing": 0,
+      "fx_carried_forward_days": 8
+    }
+  },
+  "warning": "Not total returns; cash/non-cash distributions not integrated."
+}

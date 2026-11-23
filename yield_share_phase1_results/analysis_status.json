@@ -1,0 +1,48 @@
+{
+  "status": "ok",
+  "data_type": "LIVE_SOURCE_DATA",
+  "start": "2022-12-21",
+  "end": "2026-11-20",
+  "common_days": 958,
+  "qc": {
+    "ytsl_dates": 985,
+    "common_valid_dates": 958,
+    "excluded_rows": 27,
+    "market_nav_premium_threshold_pct": 10.0,
+    "market_price_anomaly_count": 4,
+    "market_price_anomaly_dates": [
+      "2022-12-20",
+      "2022-12-22",
+      "2023-01-03",
+      "2023-01-04"
+    ],
+    "missing_tsla_on_ytsl_dates": 20,
+    "missing_ytsl_market_price": 3,
+    "fx_carryforward_days": 8,
+    "max_abs_nav_daily_pct": 26.71,
+    "max_abs_market_daily_pct": 21.562
+  },
+  "event_mapping": {
+    "applied_cash_events": 47,
+    "excluded_events_at_or_before_start": 0,
+    "shifted_event_count": 0,
+    "shifted_events": []
+  },
+  "total_return_at_end_pct": {
+    "tsla_cad": 164.5447,
+    "ytsl_nav_drip": 120.4114,
+    "ytsl_market_drip": 119.8624,
+    "ytsl_nav_no_reinvest": 93.0226,
+    "ytsl_market_no_reinvest": 91.9869
+  },
+  "methodology": {
+    "cash_event_time": "entitlement on ex-date, mapped to next common closing session if necessary",
+    "notional": "Excluded from cash and unit reinvestment; separately audited",
+    "market_calendar": "YTSL/TSLA common valid dates only",
+    "fx": "Bank of Canada reference USD/CAD, carry-forward <=5 calendar days",
+    "reinvestment": "At event-day closing NAV/market price",
+    "monthly_regimes": "TSLA CAD monthly return >+5%, within +/-5%, <-5%; first and last incomplete month excluded",
+    "data_validation": "Distribution events are secondary-source seed pending official line-by-line verification; do not publish as final verified research.",
+    "market_price_quality": "Market prices with |premium to NAV| over specified threshold excluded from ALL series on common calendar, raw data preserved; flagged rows not independently confirmed errors. Results provisional."
+  }
+}
