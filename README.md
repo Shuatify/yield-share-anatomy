@@ -73,3 +73,11 @@ uv run --locked python -m yield_share_anatomy.fetch \
 ```
 
 这只更新临时工作区；想形成新的可审计快照，请按 [docs/DATA.md](docs/DATA.md) 的步骤另建日期目录并核验。Purpose 的 HTTP 429 可继续通过浏览器手动下载解决，避免自动密集重试。
+
+### 验证 Market Regime 的每月收益
+
+```bash
+uv run --locked python -m yield_share_anatomy.monthly_validation
+```
+
+以独立 NAV / TSLA CAD 日历，逐月核对原有 46 个月的回报、月末日期和市场环境分类。结果保存于 `outputs/regime_validation/`；详情参见 [Market Regime Validation](docs/MARKET_REGIME_VALIDATION.md)。
