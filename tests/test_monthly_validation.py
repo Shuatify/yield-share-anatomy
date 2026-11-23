@@ -83,6 +83,10 @@ def test_regime_5_percent_threshold_is_strict():
                      [100, 105, 105])
     row = independent_monthly(nav, tsla)
     assert row.regime.iloc[0] == "Sideways"
+    # 95/100 - 1 also has a tiny negative floating-point representation error.
+    down_equal = make_tsla(["2025-01-31", "2025-02-28", "2025-03-31"],
+                           [100, 95, 95])
+    assert independent_monthly(nav, down_equal).regime.iloc[0] == "Sideways"
     lower = make_tsla(["2025-01-31", "2025-02-28", "2025-03-31"],
                       [100, 94, 94])
     assert independent_monthly(nav, lower).regime.iloc[0] == "Down"

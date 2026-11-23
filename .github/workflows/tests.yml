@@ -28,3 +28,19 @@ jobs:
           uv run --locked python -m yield_share_anatomy.benchmark > /dev/null
           uv run --locked python -m yield_share_anatomy.market > /dev/null
           uv run --locked python -m yield_share_anatomy.regimes > /dev/null
+      - name: Validate real-data 46-month regimes
+        run: |
+          uv run --locked python -m yield_share_anatomy.monthly_validation > /dev/null
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("outputs/regime_validation/regime_validation_status.json").read_text())
+          assert report["status"] == "pass"
+          assert report["month_count"] == 46
+          print(json.dumps({
+              "status": report["status"],
+              "month_count": report["month_count"],
+              "max_abs_difference_pp": report["max_abs_difference_pp"],
+              "regime_summary": report["regime_summary"],
+          }, indent=2))
+          PY
