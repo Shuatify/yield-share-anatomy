@@ -128,6 +128,8 @@ def test_real_pinned_leverage_paths_and_beta_are_reproduced(tmp_path):
     assert report["shared_return_intervals"] == 962
     assert report["actual_ytsl_nav"]["total_return_pct"] == pytest.approx(
         120.41139492221933, abs=1e-8)
+    assert report["actual_ytsl_nav"]["max_drawdown_shared_closes_pct"] == pytest.approx(
+        -58.31161389385679, abs=1e-8)
     assert report["actual_ytsl_nav"]["down_minus_up_beta"] == pytest.approx(
         0.1303006081534479, abs=1e-9)
     s = {round(x["leverage"], 1): x for x in report["scenarios"]}
@@ -145,6 +147,10 @@ def test_real_pinned_leverage_paths_and_beta_are_reproduced(tmp_path):
     assert s[1.2]["max_drawdown_shared_closes_pct"] == pytest.approx(
         -61.82960276353535, abs=1e-7)
     assert all(len(v["by_calendar_year"]) == 5 for v in s.values())
+    assert s[1.2]["by_calendar_year"][2]["model_return_pct"] == pytest.approx(
+        89.29612525723594, abs=1e-8)
+    assert s[1.2]["by_calendar_year"][3]["model_return_pct"] == pytest.approx(
+        2.396962709351036, abs=1e-8)
     assert len(pd.read_csv(tmp_path / "daily_model_on_tsla_sessions.csv")) == 983 * 3
     assert len(pd.read_csv(tmp_path / "common_close_wealth.csv")) == 963
     status = json.loads((tmp_path / "leverage_counterfactual_summary.json").read_text())

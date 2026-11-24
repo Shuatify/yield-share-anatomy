@@ -45,9 +45,29 @@ rebalanced before modeling the later shared-close interval.
 This distinction is deliberate; the model's **native US daily beta**
 would be equal to the input leverage by construction.
 
-Drawdown on *shared closes* only: model 1.0× ~−54.20%, model 1.1×
-~−58.14%, model 1.2× ~−61.83%. These are not margin/liquidation
-risk measures and are not individual US-session drawdowns.
+Drawdown on *shared closes* only: observed YTSL NAV ~−58.31%,
+model 1.0× ~−54.20%, model 1.1× ~−58.14%, model 1.2× ~−61.83%.
+The 1.1× model has nearly the same max drawdown as YTSL NAV but still
+a 51.35 pp higher cumulative return: **matching one maximum drawdown
+is not enough to replicate an investment strategy or its return path**.
+These are not margin/liquidation risk measures and are not individual
+US-session drawdowns.
+
+### Calendar-year comparison
+
+| Ending calendar year | YTSL NAV DRIP | TSLA CAD 1.0× | Daily-reset 1.1× | Daily-reset 1.2× |
+|---|---:|---:|---:|---:|
+| Partial 2022 | −12.19% | −10.91% | −12.08% | −13.27% |
+| 2023 | +89.79% | +96.98% | +107.64% | +118.27% |
+| 2024 | +45.67% | +76.82% | +83.29% | +89.30% |
+| 2025 | +16.83% | +6.07% | +4.43% | +2.40% |
+| Through 2026-11-20 | −22.29% | −19.63% | −22.22% | −24.89% |
+
+The **2024** divergence is especially large, while YTSL NAV
+outperformed every frictionless model in **2025**. This descriptive
+pattern cannot identify which issuer strategy component produced it.
+Returns are computed from *common-close interval groups*, with the
+first 2022 and last 2026 years partial; they are not simple sums.
 
 ## Validation and limitations
 
