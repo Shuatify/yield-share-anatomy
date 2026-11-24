@@ -1,0 +1,39 @@
+name: Three-way TSLA CAD CDR YTSL returns
+
+on:
+  pull_request:
+    paths:
+      - 'yield_share_anatomy/three_way.py'
+      - 'tests/test_three_way.py'
+      - '.github/workflows/three-way-validation.yml'
+      - 'docs/THREE_WAY_RETURNS.md'
+      - 'data/snapshots/2026-11-20-cdr-yahoo/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  three-way:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.13'
+      - name: Install locked dependencies
+        run: uv sync --locked
+      - name: Regression tests and fixed input hash audit
+        run: uv run --locked pytest -q tests/test_three_way.py
+      - name: Compute independent three-way return paths
+        run: |
+          uv run --locked python -m yield_share_anatomy.three_way \
+            --out outputs/three_way
+      - name: Preserve daily/monthly/yearly inputs and summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsla-cdr-ytsl-three-way-2026-11-20
+          path: outputs/three_way/
+          if-no-files-found: warn
+          retention-days: 30
