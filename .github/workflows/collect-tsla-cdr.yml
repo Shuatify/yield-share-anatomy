@@ -31,7 +31,8 @@ jobs:
           uv run --locked python -m yield_share_anatomy.cdr \
             --out outputs/cdr_collection \
             --calendar-csv data/snapshots/2026-11-20/ytsl_purpose_daily.csv \
-            --exchange-csv data/reference/tsla_cdr_tsx_alpha_spot_checks_2026-11-24.csv
+            --exchange-csv data/reference/tsla_cdr_tsx_alpha_spot_checks_2026-11-24.csv \
+            --secondary-csv data/reference/tsla_cdr_stockwatch_legacy_spot_check_2026-11-24.csv
       - name: Audit historical CDR / TSLA / FX quote consistency
         run: |
           uv run --locked python -m yield_share_anatomy.cdr_proxy_validation \
