@@ -109,11 +109,11 @@ def fit_beta(pairs: pd.DataFrame, *, min_n: int = 3) -> dict:
     return {
         "n": len(x),
         "beta": beta,
-        "alpha_daily_pp": alpha * 100,
+        "alpha_interval_pp": alpha * 100,
         "r_squared": (sxy*sxy/(sxx*syy)) if syy > 1e-25 else None,
-        "mean_tsla_daily_pct": xbar * 100,
-        "mean_nav_daily_pct": ybar * 100,
-        "mean_relative_daily_pp": (ybar - xbar) * 100,
+        "mean_tsla_interval_pct": xbar * 100,
+        "mean_nav_interval_pct": ybar * 100,
+        "mean_relative_interval_pp": (ybar - xbar) * 100,
     }
 
 
@@ -210,7 +210,7 @@ def rolling_beta(pairs: pd.DataFrame, *,
                 "start_date": subset["previous_date"].iloc[0],
                 "beta": fit["beta"],
                 "r_squared": fit["r_squared"],
-                "alpha_daily_pp": fit["alpha_daily_pp"],
+                "alpha_interval_pp": fit["alpha_interval_pp"],
             })
     return pd.DataFrame(rows).sort_values(
         ["window_intervals", "date"]).reset_index(drop=True)

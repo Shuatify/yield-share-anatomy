@@ -20,7 +20,7 @@ def test_ols_with_intercept_recovers_known_beta():
     y = [0.002 + 1.25 * v for v in x]
     result = fit_beta(returns(x, y))
     assert result["beta"] == pytest.approx(1.25)
-    assert result["alpha_daily_pp"] == pytest.approx(.2)
+    assert result["alpha_interval_pp"] == pytest.approx(.2)
     assert result["r_squared"] == pytest.approx(1.0)
     assert result["n"] == 5
 
