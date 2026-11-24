@@ -84,3 +84,23 @@ jobs:
               assert report["block_bootstrap"]["replicates"] == 400
               assert report["paired_intervals"] == 962
           PY
+      - name: Reconcile exact real-data compounding identity
+        run: |
+          uv run --locked python -m yield_share_anatomy.compounding > /dev/null
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("outputs/compounding/compounding_summary.json").read_text())
+          assert r["status"] == "pass" and r["paired_intervals"] == 962
+          assert abs(r["wealth"]["terminal_return_gap_pp_of_initial_capital"] + 44.13329311080821) < 1e-8
+          c = r["components_100x_decimal"]
+          assert abs(c["relative_log_wealth_100x"] + 18.25144128520136) < 1e-8
+          assert abs(c["identity_residual_100x"]) < 1e-9
+          print(json.dumps({
+              "wealth": r["wealth"],
+              "components": c,
+              "yearly": r["by_year"],
+              "extremes": r["extremes"],
+              "input_sha256": r["input_sha256"],
+          }, indent=2))
+          PY

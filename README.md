@@ -91,3 +91,11 @@ uv run --locked python -m yield_share_anatomy.exposure
 计算 YTSL NAV DRIP 对 TSLA CAD 的带截距回归 Beta、上涨/下跌条件 Beta、63/126 区间滚动 Beta 和区块 Bootstrap 不确定性。结果保存在 `outputs/effective_beta/`，详情见 [研究方法](docs/EFFECTIVE_BETA.md)。
 
 数值结果与不确定性分析参见 [2026-11-20 Effective Beta 研究记录](research/validation/2026-11-20-effective-beta.md)。
+
+### Compounding & Log Wealth Anatomy
+
+```bash
+uv run --locked python -m yield_share_anatomy.compounding
+```
+
+用严格的对数恒等式拆解 YTSL NAV DRIP 与 TSLA CAD 的历史复利财富差距，输出逐区间与逐年贡献、二阶近似和独立终点核对。原始数据不变，新结果写入 `outputs/compounding/`。参见 [方法说明](docs/COMPOUNDING_ANATOMY.md) 和 [2026-11-20 研究记录](research/validation/2026-11-20-compounding.md)。
