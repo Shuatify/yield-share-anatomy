@@ -104,3 +104,25 @@ jobs:
               "input_sha256": r["input_sha256"],
           }, indent=2))
           PY
+      - name: Reproduce daily-reset leverage counterfactuals
+        run: |
+          uv run --locked python -m yield_share_anatomy.leverage > /dev/null
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("outputs/leverage_counterfactual/leverage_counterfactual_summary.json").read_text())
+          assert r["status"] == "pass"
+          assert r["native_tsla_trading_closes"] == 983
+          assert r["shared_nav_tsla_closes"] == 963
+          assert r["shared_return_intervals"] == 962
+          assert [x["leverage"] for x in r["scenarios"]] == [1.0, 1.1, 1.2]
+          assert abs(r["scenarios"][0]["total_return_pct"] - 164.54468803302754) < 1e-8
+          assert abs(r["scenarios"][1]["total_return_pct"] - 171.7657053260988) < 1e-8
+          assert abs(r["scenarios"][2]["total_return_pct"] - 175.62690522311652) < 1e-8
+          print(json.dumps({
+              "actual_ytsl_nav": r["actual_ytsl_nav"],
+              "scenarios": r["scenarios"],
+              "assumptions": r["assumptions"],
+              "input_sha256": r["input_sha256"],
+          }, indent=2))
+          PY
