@@ -183,7 +183,8 @@ def audit_external(stitched: pd.DataFrame, source: pd.DataFrame,
 def run(out: Path, start: date = START, end: date = END,
         ne_json: Path | None = None, to_json: Path | None = None,
         exchange_csv: Path | None = None, cibc_csv: Path | None = None,
-        calendar_csv: Path | None = None) -> dict:
+        calendar_csv: Path | None = None,
+        secondary_csv: Path | None = None) -> dict:
     if start >= end or start > CBOE_END or end <= TSX_START:
         raise CDRDataError("Date range must span Cboe and TSX venue periods")
     out.mkdir(parents=True, exist_ok=True)
@@ -221,7 +222,8 @@ def run(out: Path, start: date = START, end: date = END,
                        "rows": adjusted_different})
 
     external = []
-    for label, path in (("exchange", exchange_csv), ("cibc", cibc_csv)):
+    for label, path in (("exchange", exchange_csv), ("cibc", cibc_csv),
+                        ("secondary", secondary_csv)):
         if path:
             external.append(audit_external(
                 merged, pd.read_csv(path, dtype={"date": "string"}), label))
@@ -267,10 +269,11 @@ def main() -> None:
     p.add_argument("--exchange-csv", type=Path)
     p.add_argument("--cibc-csv", type=Path)
     p.add_argument("--calendar-csv", type=Path)
+    p.add_argument("--secondary-csv", type=Path)
     a = p.parse_args()
     report = run(a.out, ne_json=a.ne_json, to_json=a.to_json,
                  exchange_csv=a.exchange_csv, cibc_csv=a.cibc_csv,
-                 calendar_csv=a.calendar_csv)
+                 calendar_csv=a.calendar_csv, secondary_csv=a.secondary_csv)
     print(json.dumps({
         "status": report["status"], "rows": report["rows"],
         "issues": len(report["issues"]),
