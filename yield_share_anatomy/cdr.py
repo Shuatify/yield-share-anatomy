@@ -124,9 +124,20 @@ def stitch(cboe: pd.DataFrame, tsx: pd.DataFrame,
     if not overlap_checked:
         issues.append({"code": "no_verified_dual_listing_overlap",
                        "period": "2025-02-05..2025-02-13"})
+    legacy = cboe.loc[cboe["date"] <= CBOE_END.isoformat()]
+    if legacy.empty:
+        # Yahoo TSLA.TO returns prices before the TSX listing began.
+        # Treat them as *unverified historical vendor backfill*, not TSX trades.
+        legacy = tsx.loc[tsx["date"] <= CBOE_END.isoformat()]
+        issues.append({
+            "code": "historical_vendor_backfill_requires_exchange_validation",
+            "ticker": "TSLA.TO", "expected_venue": "Cboe Canada",
+            "rows": int(len(legacy)),
+            "first": legacy.iloc[0]["date"] if len(legacy) else None,
+            "last": legacy.iloc[-1]["date"] if len(legacy) else None
+        })
     rows = pd.concat([
-        cboe.loc[cboe["date"] <= CBOE_END.isoformat()],
-        tsx.loc[tsx["date"] > CBOE_END.isoformat()]
+        legacy, tsx.loc[tsx["date"] > CBOE_END.isoformat()]
     ], ignore_index=True).sort_values("date").reset_index(drop=True)
     if rows.empty or rows["date"].duplicated().any():
         raise CDRDataError("Empty or duplicated stitched series")
@@ -202,6 +213,12 @@ def run(out: Path, start: date = START, end: date = END,
             issues.append({"code": "no_yahoo_history_for_symbol", "ticker": symbol})
     merged = merged.loc[merged["date"].between(start.isoformat(), end.isoformat())]
     merged.to_csv(out / "tsla_cdr_preliminary_daily.csv", index=False)
+    close = pd.to_numeric(merged["close"], errors="coerce")
+    adj = pd.to_numeric(merged["adj_close"], errors="coerce")
+    adjusted_different = int(((close - adj).abs() > 0.000001).sum())
+    if adjusted_different:
+        issues.append({"code": "adjusted_vs_unadjusted_close_difference",
+                       "rows": adjusted_different})
 
     external = []
     for label, path in (("exchange", exchange_csv), ("cibc", cibc_csv)):
@@ -225,7 +242,7 @@ def run(out: Path, start: date = START, end: date = END,
             issues.append({"code": ext["source"] + "_close_disagreement", **item})
     report = {
         "status": "needs_review", "start": str(start), "end": str(end),
-        "primary": "Yahoo Cboe through 2025-02-13; Yahoo TSX thereafter",
+        "primary": "Yahoo NE Cboe where available; otherwise pre-TSX-listing Yahoo TO vendor backfill; Yahoo TO from 2025-02-14",
         "rows": len(merged), "first": merged.iloc[0]["date"],
         "last": merged.iloc[-1]["date"], "sources": sources,
         "reference_calendar_missing_dates": missing,
