@@ -1,0 +1,69 @@
+{
+  "status": "needs_review",
+  "start": "2022-12-21",
+  "end": "2026-11-20",
+  "primary": "Yahoo NE Cboe where available; otherwise pre-TSX-listing Yahoo TO vendor backfill; Yahoo TO from 2025-02-14",
+  "rows": 983,
+  "first": "2022-12-21",
+  "last": "2026-11-20",
+  "sources": {
+    "TSLA.NE": {
+      "request_url": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA.NE?period1=1671408000&period2=1795305600&interval=1d&events=div%2Csplits",
+      "raw_sha256": "baf18c04891d8a1e4b4e833d0fcc78712af32cb6872c646125fad519259079eb",
+      "rows": 0,
+      "first": null,
+      "last": null,
+      "event_types": []
+    },
+    "TSLA.TO": {
+      "request_url": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA.TO?period1=1671408000&period2=1795305600&interval=1d&events=div%2Csplits",
+      "raw_sha256": "6af5c4a617a8657370c1db2d5c4e024cf992705adab4d22f57694d53b6684ebd",
+      "rows": 983,
+      "first": "2022-12-21",
+      "last": "2026-11-20",
+      "event_types": []
+    }
+  },
+  "reference_calendar_missing_dates": [],
+  "crosschecks": [
+    {
+      "source": "exchange",
+      "matches": 2,
+      "outliers": []
+    },
+    {
+      "source": "cibc",
+      "matches": 0,
+      "note": "no independent file supplied"
+    },
+    {
+      "source": "secondary",
+      "matches": 1,
+      "outliers": []
+    }
+  ],
+  "issues": [
+    {
+      "code": "no_verified_dual_listing_overlap",
+      "period": "2025-02-05..2025-02-13"
+    },
+    {
+      "code": "historical_vendor_backfill_requires_exchange_validation",
+      "ticker": "TSLA.TO",
+      "expected_venue": "Cboe Canada",
+      "rows": 539,
+      "first": "2022-12-21",
+      "last": "2025-02-13"
+    },
+    {
+      "code": "no_yahoo_history_for_symbol",
+      "ticker": "TSLA.NE"
+    }
+  ],
+  "limitations": [
+    "No verified CIBC daily historical OHLCV file",
+    "No fabricated prices or gap interpolation",
+    "Provisional quotes, not yet total return data",
+    "All corporate actions require independent review"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "status": "reviewed_vendor_data_with_residual_legacy_provenance_risk",
+  "sample_end": "2026-11-20",
+  "frozen_on": "2026-11-24",
+  "rows": 983,
+  "base_currency": "CAD",
+  "instrument": "TSLA CDR (CIBC)",
+  "source_symbol": "TSLA.TO",
+  "pre_tsx_symbol_history": "Yahoo TSLA.TO backfill, historical Cboe venue",
+  "basis": "Close in CAD; Adj Close checked against Close",
+  "cash_distributions": "Assumed zero based on CIBC product Dividend History N/A; issuer action re-check before publication",
+  "residual_risk": "539 pre-2025-02-14 Yahoo backfill observations not each individually checked against Cboe",
+  "sha256": {
+    "tsla_cdr_yahoo_daily.csv": "03b06d6239297c87cbf0f08d09f75fff02c751ebfcb0c17cfd7873b1ddccfb3e",
+    "yahoo_TSLA_TO_raw.json": "6af5c4a617a8657370c1db2d5c4e024cf992705adab4d22f57694d53b6684ebd",
+    "quality_report.json": "b7c893a7b3d39c50d7aeb748fdb835ebf939013f8a094360f71393a0a90ef534"
+  }
+}
