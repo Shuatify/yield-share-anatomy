@@ -88,8 +88,10 @@ def parse_chart(raw: dict, symbol: str, start: date = START,
             "ticker": symbol,
         })
     frame = pd.DataFrame(rows, columns=COLUMNS)
-    if frame.empty or frame["date"].duplicated().any():
-        raise CDRDataError(f"{symbol}: empty or duplicate dates")
+    if frame["date"].duplicated().any():
+        raise CDRDataError(f"{symbol}: duplicate dates")
+    # A retired venue may have valid Yahoo metadata but zero historical candles.
+    # Preserve source evidence and continue to collect the other venue.
     return frame.sort_values("date").reset_index(drop=True)
 
 
@@ -189,11 +191,15 @@ def run(out: Path, start: date = START, end: date = END,
         frames[symbol] = frame
         sources[symbol] = {
             "request_url": url, "raw_sha256": sha256(path),
-            "rows": len(frame), "first": frame.iloc[0]["date"],
-            "last": frame.iloc[-1]["date"],
+            "rows": len(frame),
+            "first": frame.iloc[0]["date"] if len(frame) else None,
+            "last": frame.iloc[-1]["date"] if len(frame) else None,
             "event_types": sorted((payload["chart"]["result"][0].get("events") or {}).keys())
         }
     merged, issues = stitch(frames["TSLA.NE"], frames["TSLA.TO"])
+    for symbol, frame in frames.items():
+        if frame.empty:
+            issues.append({"code": "no_yahoo_history_for_symbol", "ticker": symbol})
     merged = merged.loc[merged["date"].between(start.isoformat(), end.isoformat())]
     merged.to_csv(out / "tsla_cdr_preliminary_daily.csv", index=False)
 
