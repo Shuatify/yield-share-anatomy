@@ -99,3 +99,11 @@ uv run --locked python -m yield_share_anatomy.compounding
 ```
 
 用严格的对数恒等式拆解 YTSL NAV DRIP 与 TSLA CAD 的历史复利财富差距，输出逐区间与逐年贡献、二阶近似和独立终点核对。原始数据不变，新结果写入 `outputs/compounding/`。参见 [方法说明](docs/COMPOUNDING_ANATOMY.md) 和 [2026-11-20 研究记录](research/validation/2026-11-20-compounding.md)。
+
+### Zero-cost Daily Leverage Counterfactual
+
+```bash
+uv run --locked python -m yield_share_anatomy.leverage
+```
+
+以 TSLA CAD 真实日线为基础，模拟每日再平衡 1.0×、1.1×、1.2× 的**零融资成本**反事实杠杆组合，再与独立 NAV DRIP 在相同日期比较。结果在 `outputs/leverage_counterfactual/`；参见 [研究方法](docs/LEVERAGE_COUNTERFACTUAL.md) 与 [2026-11-20 验证记录](research/validation/2026-11-20-leverage-counterfactual.md)。这些模型**不代表 YTSL 的真实期权或融资策略**。
