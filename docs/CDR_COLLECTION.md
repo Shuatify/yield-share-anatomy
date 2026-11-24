@@ -87,3 +87,28 @@ before the TSX began listing the instrument. They may represent a historical
 feed backfill from the old Cboe listing; do **not** misrepresent them as
 pre-listing TSX trades. The collection script explicitly flags these rows as
 **unverified vendor backfill** pending dated Cboe / CIBC verification.
+
+## Independent exchange spot checks (official TSX Alpha Daily Record)
+
+The two **TSX Alpha venue** daily records below are independently published
+exchange evidence. These are *venue-specific closes*, not necessarily identical
+to consolidated Canadian market closing prices:
+
+| Date | Yahoo TSLA.TO close | TSX Alpha close | Absolute gap (CAD) |
+|---|---:|---:|---:|
+| 2026-01-09 | 39.21 | 39.19 | 0.02 |
+| 2026-06-02 | 36.98 | 36.98 | 0.00 |
+
+Verifiable official source documents:
+- [2026-01-09 TMX TSX Alpha Daily Record](https://www.tsx.com/files/alpha/daily-record/AlphaDailyRecord01092026.pdf), row `TSLA — Tesla CDR CAD HD`.
+- [2026-06-02 TMX TSX Alpha Daily Record](https://www.tsx.com/files/alpha/daily-record/AlphaDailyRecord06022026.pdf), row `TSLA — Tesla CDR CAD HD`.
+
+Machine-readable independent close observations are stored in
+`data/reference/tsla_cdr_tsx_alpha_spot_checks_2026-11-24.csv` and used as
+`--exchange-csv` by the collection workflow. The 0.02 CAD gap is about
+0.051% and could be explained by venue-specific last trades; **do not silently
+replace Yahoo quotes or treat these two dates as validation of the 539-day
+pre-TSX historical vendor backfill**. For authoritative pre-Feb-2025 closes,
+Cboe Canada describes its [Closing Price File / historical data
+service](https://www.cboe.com/market_data_services/ca/equities) but no
+unrestricted downloadable historical file has been verified.
