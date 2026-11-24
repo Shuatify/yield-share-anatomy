@@ -6,6 +6,7 @@ The reference snapshots and CDR candidate files remain read-only.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import numpy as np
@@ -13,7 +14,7 @@ import pandas as pd
 
 
 def audit(cdr: pd.DataFrame, tsla: pd.DataFrame, fx: pd.DataFrame, *,
-          gap_threshold_pp: float = 6.0,
+          gap_threshold_pp: float = 2.0,
           ratio_change_threshold_pp: float = 3.0) -> tuple[dict, pd.DataFrame]:
     for label, frame, needed in (
         ("cdr", cdr, {"date", "close"}),
@@ -92,6 +93,8 @@ def main() -> None:
     p.add_argument("--out", type=Path, default=Path("outputs/cdr_collection"))
     a = p.parse_args()
     report, detail = audit(pd.read_csv(a.cdr), pd.read_csv(a.tsla), pd.read_csv(a.fx))
+    report["input_sha256"] = {label: hashlib.sha256(path.read_bytes()).hexdigest()
+                              for label, path in (("cdr", a.cdr), ("tsla", a.tsla), ("fx", a.fx))}
     a.out.mkdir(parents=True, exist_ok=True)
     detail.to_csv(a.out / "cdr_underlying_diagnostic_intervals.csv", index=False)
     (a.out / "cdr_underlying_diagnostic_summary.json").write_text(
