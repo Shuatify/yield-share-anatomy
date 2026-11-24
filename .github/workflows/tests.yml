@@ -44,3 +44,43 @@ jobs:
               "regime_summary": report["regime_summary"],
           }, indent=2))
           PY
+      - name: Analyze real-data effective beta and bootstrap CI
+        run: |
+          uv run --locked python -m yield_share_anatomy.exposure > /dev/null
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("outputs/effective_beta/effective_beta_summary.json").read_text())
+          assert r["status"] == "ok"
+          assert r["paired_intervals"] == 962
+          assert abs(r["full_daily"]["beta"] - 1.0840605323710557) < 1e-9
+          assert r["block_bootstrap"]["replicates"] == 800
+          print(json.dumps({
+              "start": r["start"], "end": r["end"],
+              "n": r["paired_intervals"],
+              "full": r["full_daily"],
+              "directional": r["daily_directional"],
+              "bootstrap": r["block_bootstrap"],
+              "rolling": r["rolling"],
+              "monthly": r["monthly_46"],
+              "annual": r["annual"],
+          }, indent=2))
+          PY
+      - name: Bootstrap block-length sensitivity
+        run: |
+          for block in 5 21; do
+            uv run --locked python -m yield_share_anatomy.exposure \
+              --block "$block" --replicates 400 --seed 20261120 \
+              --out "outputs/effective_beta_block_${block}" > /dev/null
+          done
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          for block in (5, 21):
+              file = Path(f"outputs/effective_beta_block_{block}/effective_beta_summary.json")
+              report = json.loads(file.read_text())
+              ci = report["block_bootstrap"]["beta_ci_95"]["down_minus_up"]
+              print(f"block={block}, CI(down-up)={ci}, includes_zero={report['block_bootstrap']['delta_includes_zero']}")
+              assert report["block_bootstrap"]["replicates"] == 400
+              assert report["paired_intervals"] == 962
+          PY

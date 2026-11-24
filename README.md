@@ -81,3 +81,13 @@ uv run --locked python -m yield_share_anatomy.monthly_validation
 ```
 
 以独立 NAV / TSLA CAD 日历，逐月核对原有 46 个月的回报、月末日期和市场环境分类。结果保存于 `outputs/regime_validation/`；详情参见 [Market Regime Validation](docs/MARKET_REGIME_VALIDATION.md)。
+
+### 历史收益敏感度 / Effective Beta
+
+```bash
+uv run --locked python -m yield_share_anatomy.exposure
+```
+
+计算 YTSL NAV DRIP 对 TSLA CAD 的带截距回归 Beta、上涨/下跌条件 Beta、63/126 区间滚动 Beta 和区块 Bootstrap 不确定性。结果保存在 `outputs/effective_beta/`，详情见 [研究方法](docs/EFFECTIVE_BETA.md)。
+
+数值结果与不确定性分析参见 [2026-11-20 Effective Beta 研究记录](research/validation/2026-11-20-effective-beta.md)。
