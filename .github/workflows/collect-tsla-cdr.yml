@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'yield_share_anatomy/cdr.py'
+      - 'yield_share_anatomy/cdr_proxy_validation.py'
       - 'tests/test_cdr.py'
       - 'docs/CDR_COLLECTION.md'
       - '.github/workflows/collect-tsla-cdr.yml'
@@ -30,6 +31,11 @@ jobs:
             --out outputs/cdr_collection \
             --calendar-csv data/snapshots/2026-11-20/ytsl_purpose_daily.csv \
             --exchange-csv data/reference/tsla_cdr_tsx_alpha_spot_checks_2026-11-24.csv
+      - name: Audit historical CDR / TSLA / FX quote consistency
+        run: |
+          uv run --locked python -m yield_share_anatomy.cdr_proxy_validation \
+            --cdr outputs/cdr_collection/tsla_cdr_preliminary_daily.csv \
+            --out outputs/cdr_collection
       - name: Preserve raw evidence and QC (even if fetch fails)
         if: always()
         uses: actions/upload-artifact@v4
