@@ -142,6 +142,18 @@ def test_short_year_is_explicitly_insufficient():
     assert annual == [{"year": 2022, "status": "insufficient_sample", "n": 5}]
 
 
+
+def test_annual_directional_beta_is_separate_per_calendar_year():
+    x = [0.01, 0.03, 0.05, -0.02, -0.04, -0.06] * 12
+    frame = returns(x, [v if v > 0 else 1.25*v for v in x])
+    frame["date"] = pd.bdate_range("2024-01-01", periods=len(frame))
+    group = annual_fits(frame)
+    assert len(group) == 1
+    assert group[0]["year"] == 2024
+    assert group[0]["directional"]["up"]["n"] == 36
+    assert group[0]["directional"]["down"]["n"] == 36
+    assert group[0]["directional"]["down_minus_up_beta"] == pytest.approx(.25)
+
 def test_real_2026_11_20_effective_beta_snapshot(tmp_path):
     report = run(SNAPSHOT_DIR, CASH_EVENTS, tmp_path,
                  block=10, replicates=60, seed=20261120)
@@ -158,6 +170,11 @@ def test_real_2026_11_20_effective_beta_snapshot(tmp_path):
     assert report["rolling"]["63"]["latest_beta"] == pytest.approx(1.0972766774844869, abs=1e-10)
     assert report["rolling"]["126"]["latest_beta"] == pytest.approx(1.1122876670444135, abs=1e-10)
     assert report["annual"][0]["status"] == "insufficient_sample"
+    years = {v["year"]: v for v in report["annual"] if v["status"] == "estimated"}
+    assert sorted(years) == [2023, 2024, 2025, 2026]
+    assert all(years[y]["directional"]["down_minus_up_beta"] > 0 for y in years)
+    assert years[2024]["directional"]["down_minus_up_beta"] == pytest.approx(
+        0.1666939869468964, abs=1e-9)
     assert len(pd.read_csv(tmp_path/"paired_daily_returns.csv")) == 962
     assert len(pd.read_csv(tmp_path/"rolling_beta.csv")) == 900 + 837
     assert (tmp_path/"effective_beta_summary.json").exists()

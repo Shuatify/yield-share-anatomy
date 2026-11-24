@@ -63,6 +63,7 @@ jobs:
               "bootstrap": r["block_bootstrap"],
               "rolling": r["rolling"],
               "monthly": r["monthly_46"],
+              "annual": r["annual"],
           }, indent=2))
           PY
       - name: Bootstrap block-length sensitivity

@@ -225,7 +225,13 @@ def _safe_fit(pairs: pd.DataFrame, min_n: int) -> dict:
 def annual_fits(pairs: pd.DataFrame) -> list[dict]:
     annual = []
     for year, group in pairs.groupby(pairs["date"].dt.year):
-        annual.append({"year": int(year), **_safe_fit(group, 30)})
+        row = {"year": int(year), **_safe_fit(group, 30)}
+        if row["status"] == "estimated":
+            try:
+                row["directional"] = conditional_fits(group, min_n=25)
+            except ExposureError:
+                row["directional"] = {"status": "insufficient_sign_subsets"}
+        annual.append(row)
     return annual
 
 
