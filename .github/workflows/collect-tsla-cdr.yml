@@ -1,0 +1,39 @@
+name: Collect TSLA CDR historical candidates
+
+on:
+  pull_request:
+    paths:
+      - 'yield_share_anatomy/cdr.py'
+      - 'tests/test_cdr.py'
+      - 'docs/CDR_COLLECTION.md'
+      - '.github/workflows/collect-tsla-cdr.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - name: Install pinned dependencies
+        run: uv sync --locked
+      - name: Synthetic ingestion tests
+        run: uv run --locked pytest -q tests/test_cdr.py
+      - name: Collect Yahoo venue histories (candidate only)
+        run: |
+          uv run --locked python -m yield_share_anatomy.cdr \
+            --out outputs/cdr_collection \
+            --calendar-csv data/snapshots/2026-11-20/ytsl_purpose_daily.csv
+      - name: Preserve raw evidence and QC (even if fetch fails)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsla-cdr-candidate-collection
+          path: outputs/cdr_collection/
+          if-no-files-found: warn
+          retention-days: 14
