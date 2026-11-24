@@ -77,3 +77,13 @@ resolve exceptions before committing a dated data snapshot.
    are no separate CDR cash events before claiming price = total return.
 6. Commit a new versioned snapshot + QC report in a **separate** PR only
    after quality review. No modifications to legacy research outputs.
+
+## First live collection result (2026-11-24)
+
+Yahoo `TSLA.NE` returned valid metadata but **zero historical candles** for
+2022-12-21..2026-11-20. The Yahoo `TSLA.TO` chart returned **983 daily
+observations covering 2022-12-21..2026-11-20**, including 539 sessions from
+before the TSX began listing the instrument. They may represent a historical
+feed backfill from the old Cboe listing; do **not** misrepresent them as
+pre-listing TSX trades. The collection script explicitly flags these rows as
+**unverified vendor backfill** pending dated Cboe / CIBC verification.
