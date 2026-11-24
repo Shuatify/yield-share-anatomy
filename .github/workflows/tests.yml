@@ -44,3 +44,24 @@ jobs:
               "regime_summary": report["regime_summary"],
           }, indent=2))
           PY
+      - name: Analyze real-data effective beta and bootstrap CI
+        run: |
+          uv run --locked python -m yield_share_anatomy.exposure > /dev/null
+          uv run --locked python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("outputs/effective_beta/effective_beta_summary.json").read_text())
+          assert r["status"] == "ok"
+          assert r["paired_intervals"] == 962
+          assert abs(r["full_daily"]["beta"] - 1.0840605323710557) < 1e-9
+          assert r["block_bootstrap"]["replicates"] == 800
+          print(json.dumps({
+              "start": r["start"], "end": r["end"],
+              "n": r["paired_intervals"],
+              "full": r["full_daily"],
+              "directional": r["daily_directional"],
+              "bootstrap": r["block_bootstrap"],
+              "rolling": r["rolling"],
+              "monthly": r["monthly_46"],
+          }, indent=2))
+          PY
