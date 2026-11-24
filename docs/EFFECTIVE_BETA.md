@@ -23,7 +23,7 @@ r_{\mathrm{YTSL,NAV}} = \alpha + \beta r_{\mathrm{TSLA,CAD}} + \varepsilon
 - Full sample; TSLA CAD positive and negative intervals separately.
 - Condition on |TSLA return| > 1% as a simple predeclared robustness cut.
 - Trailing 63- and 126-common-interval rolling beta; yearly full-sample
-  beta; partial 2022 marked insufficient rather than extrapolated.
+  and conditional Up/Down betas; partial 2022 marked insufficient.
 - Contextual *monthly* betas using the independently validated 46-month
   sample (and months where TSLA/CAD > +5% or < -5%).
 - Seeded 10-joint-interval **moving-block bootstrap**, 800 replicates,
@@ -61,3 +61,7 @@ confidence intervals. The source distribution events remain
 \`crosscheck_needed\`; no investor tax treatment is modeled. Avoid
 interpreting interval mean gaps as the already validated cumulative
 return gap or using this as a trading signal.
+
+## Historical results
+
+A fully versioned numerical report including 800-resample confidence intervals, block-size sensitivity and year-by-year betas is recorded at [2026-11-20 Effective Beta Validation](../research/validation/2026-11-20-effective-beta.md).
