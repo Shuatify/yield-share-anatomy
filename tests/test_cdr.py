@@ -52,3 +52,16 @@ def test_yahoo_currency_must_be_cad():
     }]}}
     with pytest.raises(CDRDataError, match="currency"):
         parse_chart(raw, "TSLA.NE")
+
+
+def test_full_to_history_kept_as_unverified_legacy_backfill():
+    ne = pd.DataFrame(columns=["date", "open", "high", "low", "close", "adj_close", "volume", "ticker"])
+    to = pd.DataFrame([
+        quote("2022-12-21", 12, "TSLA.TO"),
+        quote("2025-02-13", 21, "TSLA.TO"),
+        quote("2025-02-14", 22, "TSLA.TO"),
+    ])
+    result, issues = stitch(ne, to)
+    assert len(result) == 3
+    assert result.iloc[0]["date"] == "2022-12-21"
+    assert any(x["code"] == "historical_vendor_backfill_requires_exchange_validation" for x in issues)
