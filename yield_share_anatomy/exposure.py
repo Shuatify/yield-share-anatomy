@@ -68,11 +68,11 @@ def paired_daily(nav_index: pd.DataFrame, tsla_reference: pd.DataFrame, *,
     joined = joined.loc[
         joined["date"].between(pd.Timestamp(start), pd.Timestamp(end))
     ].sort_values("date").reset_index(drop=True)
-    if len(joined) < 4:
-        raise ExposureError("Need at least four common-date NAV/TSLA observations")
-    if (joined["date"].iloc[0] != pd.Timestamp(start) or
+    if (joined.empty or joined["date"].iloc[0] != pd.Timestamp(start) or
             joined["date"].iloc[-1] != pd.Timestamp(end)):
         raise ExposureError("Exact requested start/end must be shared NAV/TSLA dates")
+    if len(joined) < 4:
+        raise ExposureError("Need at least four common-date NAV/TSLA observations")
     joined["previous_date"] = joined["date"].shift(1)
     joined["gap_calendar_days"] = (joined["date"] - joined["previous_date"]).dt.days
     joined["tsla_cad_return"] = joined["tsla_cad_reference"].pct_change(fill_method=None)
