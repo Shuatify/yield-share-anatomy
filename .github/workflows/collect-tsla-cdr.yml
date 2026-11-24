@@ -6,6 +6,7 @@ on:
       - 'yield_share_anatomy/cdr.py'
       - 'yield_share_anatomy/cdr_proxy_validation.py'
       - 'tests/test_cdr.py'
+      - 'tests/test_cdr_proxy_validation.py'
       - 'docs/CDR_COLLECTION.md'
       - '.github/workflows/collect-tsla-cdr.yml'
   workflow_dispatch:
@@ -24,7 +25,7 @@ jobs:
       - name: Install pinned dependencies
         run: uv sync --locked
       - name: Synthetic ingestion tests
-        run: uv run --locked pytest -q tests/test_cdr.py
+        run: uv run --locked pytest -q tests/test_cdr.py tests/test_cdr_proxy_validation.py
       - name: Collect Yahoo venue histories (candidate only)
         run: |
           uv run --locked python -m yield_share_anatomy.cdr \
