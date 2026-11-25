@@ -1,0 +1,48 @@
+name: Collect TSLA CDR historical candidates
+
+on:
+  pull_request:
+    paths:
+      - 'yield_share_anatomy/cdr.py'
+      - 'yield_share_anatomy/cdr_proxy_validation.py'
+      - 'tests/test_cdr.py'
+      - 'tests/test_cdr_proxy_validation.py'
+      - 'docs/CDR_COLLECTION.md'
+      - '.github/workflows/collect-tsla-cdr.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - name: Install pinned dependencies
+        run: uv sync --locked
+      - name: Synthetic ingestion tests
+        run: uv run --locked pytest -q tests/test_cdr.py tests/test_cdr_proxy_validation.py
+      - name: Collect Yahoo venue histories (candidate only)
+        run: |
+          uv run --locked python -m yield_share_anatomy.cdr \
+            --out outputs/cdr_collection \
+            --calendar-csv data/snapshots/2026-11-20/ytsl_purpose_daily.csv \
+            --exchange-csv data/reference/tsla_cdr_tsx_alpha_spot_checks_2026-11-24.csv \
+            --secondary-csv data/reference/tsla_cdr_stockwatch_legacy_spot_check_2026-11-24.csv
+      - name: Audit historical CDR / TSLA / FX quote consistency
+        run: |
+          uv run --locked python -m yield_share_anatomy.cdr_proxy_validation \
+            --cdr outputs/cdr_collection/tsla_cdr_preliminary_daily.csv \
+            --out outputs/cdr_collection
+      - name: Preserve raw evidence and QC (even if fetch fails)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsla-cdr-candidate-collection
+          path: outputs/cdr_collection/
+          if-no-files-found: warn
+          retention-days: 14
